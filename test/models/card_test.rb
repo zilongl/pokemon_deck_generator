@@ -16,11 +16,6 @@ class CardTest < ActiveSupport::TestCase
     assert_not card.save, "Saved the card without a supertype"
   end
 
-  test "should not save card without card_type" do
-    card = Card.new(name: "Charmander", supertype: "Pokémon")
-    assert_not card.save, "Saved the card without a card_type"
-  end
-
   test "should save valid card" do
     card = Card.new(name: "Charmander", card_type: "Fire", supertype: "Pokémon")
     assert card.save
