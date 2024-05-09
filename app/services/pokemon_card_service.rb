@@ -14,7 +14,7 @@ class PokemonCardService
     params = { q: query.strip }
     uri.query = URI.encode_www_form(params)
     # add select=id,name to the query
-    uri.query += '&select=id,name,types,supertype'
+    uri.query += '&select=id,name,types,supertype,subtype,level,images,hp'
     puts uri
 
     request = Net::HTTP::Get.new(uri)

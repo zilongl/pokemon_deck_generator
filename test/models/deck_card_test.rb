@@ -2,8 +2,8 @@ require "test_helper"
 
 class DeckCardTest < ActiveSupport::TestCase
   def setup
-    @card = Card.create(name: "Charizard", card_type: "Fire", supertype: "Pokémon")
-    @deck = Deck.create(name: "Fire Deck")
+    @card = Card.create(name: "Charizard", card_type: "Fire", supertype: "Pokémon", external_id: "abc-1")
+    @deck = Deck.create(name: "Fire Deck", card_type: "Fire")
     @deck_card = DeckCard.new(deck: @deck, card: @card)
   end
 

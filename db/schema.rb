@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_08_092904) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_09_030438) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_08_092904) do
     t.string "supertype"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image_url"
+    t.string "external_id"
+    t.string "subtype"
+    t.string "level"
+    t.string "hp"
   end
 
   create_table "deck_cards", force: :cascade do |t|
@@ -35,6 +40,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_08_092904) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "card_type"
   end
 
   add_foreign_key "deck_cards", "cards"

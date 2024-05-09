@@ -11,7 +11,7 @@ class DecksController < ApplicationController
 
   def show
     @deck = Deck.find(params[:id])
-    render json: @deck, include: { cards: { only: [:id, :name, :card_type, :supertype] } }
+    render json: @deck, include: { cards: { only: [:id, :name, :card_type, :supertype, :external_id, :hp, :level, :image_url] } }
   end
 
   def create
@@ -22,12 +22,20 @@ class DecksController < ApplicationController
 
     deck_name = params[:name]
     card_type = params[:card_type]
-    deck = Deck.new(name: deck_name)
+    deck = Deck.new(name: deck_name, card_type: card_type)
 
     if card_type.present?
       cards = generate_deck(card_type)
       cards.map! do |card|
-        Card.find_or_create_by(name: card['name'], card_type: card['types']&.first, supertype: card['supertype'])
+        Card.find_or_create_by(
+          name: card['name'], 
+          card_type: card['types']&.first, 
+          supertype: card['supertype'], 
+          external_id: card['id'], 
+          image_url: card['images']['small'], 
+          hp: card['hp'],
+          level: card['level']
+        )
       end
       deck.cards = cards
     end

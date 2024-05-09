@@ -4,4 +4,5 @@ class Card < ApplicationRecord
 
   validates :name, presence: true
   validates :supertype, presence: true
+  validates :external_id, presence: true, uniqueness: true
 end
