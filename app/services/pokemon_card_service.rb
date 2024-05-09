@@ -15,12 +15,28 @@ class PokemonCardService
     uri.query = URI.encode_www_form(params)
     # add select=id,name to the query
     uri.query += '&select=id,name,types,supertype,subtype,level,images,hp'
-    puts uri
 
+    # strategy to get faster response => get only 1 card and see the totalcount
+    # then set the page size to ~40 and select a random page (to accomodate for the Trainers)
+    test_uri = uri.dup
+    test_uri.query += '&pageSize=1'
+    puts test_uri
+    request_test = Net::HTTP::Get.new(test_uri)
+
+    response_test = Net::HTTP.start(test_uri.host, test_uri.port, use_ssl: true) do |http|
+      http.request(request_test)
+    end
+
+    total_count = JSON.parse(response_test.body)['totalCount']
+    number_of_pages = (total_count / 40.0).ceil
+    random_page = rand(1..number_of_pages)
+    uri.query += "&pageSize=40&page=#{random_page}"
+    puts uri
+    # the improved request
     request = Net::HTTP::Get.new(uri)
 
     response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      http.request(request)
+        http.request(request)
     end
 
     JSON.parse(response.body)['data']

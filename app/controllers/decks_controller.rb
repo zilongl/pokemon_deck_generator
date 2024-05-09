@@ -26,10 +26,11 @@ class DecksController < ApplicationController
 
     if card_type.present?
       cards = generate_deck(card_type)
+
       cards.map! do |card|
         Card.find_or_create_by(
           name: card['name'], 
-          card_type: card['types']&.first, 
+          card_type: card['types']&.join('+'), # when multiple types, join with '+'
           supertype: card['supertype'], 
           external_id: card['id'], 
           image_url: card['images']['small'], 

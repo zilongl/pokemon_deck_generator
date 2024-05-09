@@ -16,7 +16,8 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "deck should have 60 cards, 12-16 pokemon cards, 10 energy cards and trainer cards" do
-    post decks_url, params: { name: "Test Deck", card_type: "Fire" }
+    type = "Fire"
+    post decks_url, params: { name: "Test Deck", card_type: type }
 
     assert_response :created
 
@@ -28,11 +29,14 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
     assert pokemon_cards.count <= 16
 
     pokemon_cards.each do |card|
-      assert_equal "Fire", card.card_type
+      assert_equal (card.card_type.include? type), true
     end
 
     energy_cards = deck.cards.select { |card| card.supertype == "Energy" }
     assert_equal 10, energy_cards.count
+    energy_cards.each do |card|
+      assert_equal (card.name.include? type), true
+    end
 
     trainer_cards = deck.cards.select { |card| card.supertype == "Trainer" }
     assert_equal 60 - pokemon_cards.count - energy_cards.count, trainer_cards.count
